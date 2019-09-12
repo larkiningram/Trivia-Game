@@ -1,0 +1,22 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    background-image: url(../images/quiz.jpg);
+    background-size: cover;
+}
+
+
+.container {
+    background: peachpuff;
+    width: 50%;
+    
+}
+
+
+.head {
+    /* background: #72CCDE; */
+    width: 75%;
+}
