@@ -13,123 +13,53 @@ start();
 const questions = [
     {
         question: "Which does not belong?",
-        answers: {
-            a: "dog",
-            b: "cat",
-            c: "parrot",
-            d: "wolverine"
-        },
-        correctAnswer: "d"
+        answers: ["dog", "cat", "parrot", "wolverine"],
+        solution: 3
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "1",
-            b: "2",
-            c: "t",
-            d: "6"
-        },
-        correctAnswer: "c"
+        answers: ["1", "2", "t", "6"],
+        solution: 2
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "orange",
-            b: "bird",
-            c: "yellow",
-            d: "red"
-        },
-        correctAnswer: "b"
+        answers: ["orange", "bird", "yellow", "red"],
+        solution: 1
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "baker",
-            b: "cake",
-            c: "bread",
-            d: "pie"
-        },
-        correctAnswer: "a"
+        answers: ["baker", "cake", "bread", "pie"],
+        solution: 0
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "dog",
-            b: "cat",
-            c: "parrot",
-            d: "wolverine"
-        },
-        correctAnswer: "d"
+        answers: ["dog", "cat", "parrot", "wolverine"],
+        solution: 3
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "1",
-            b: "2",
-            c: "t",
-            d: "6"
-        },
-        correctAnswer: "c"
+        answers: ["dog", "cat", "parrot", "wolverine"],
+        solution: 3
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "orange",
-            b: "bird",
-            c: "yellow",
-            d: "red"
-        },
-        correctAnswer: "b"
+        answers: ["1", "2", "t", "6"],
+        solution: 2
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "baker",
-            b: "cake",
-            c: "bread",
-            d: "pie"
-        },
-        correctAnswer: "a"
+        answers: ["orange", "bird", "yellow", "red"],
+        solution: 1
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "dog",
-            b: "cat",
-            c: "parrot",
-            d: "wolverine"
-        },
-        correctAnswer: "d"
+        answers: ["baker", "cake", "bread", "pie"],
+        solution: 0
     },
     {
         question: "Which does not belong?",
-        answers: {
-            a: "1",
-            b: "2",
-            c: "t",
-            d: "6"
-        },
-        correctAnswer: "c"
-    },
-    {
-        question: "Which does not belong?",
-        answers: {
-            a: "orange",
-            b: "bird",
-            c: "yellow",
-            d: "red"
-        },
-        correctAnswer: "b"
-    },
-    {
-        question: "Which does not belong?",
-        answers: {
-            a: "baker",
-            b: "cake",
-            c: "bread",
-            d: "pie"
-        },
-        correctAnswer: "a"
+        answers: ["dog", "cat", "parrot", "wolverine"],
+        solution: 3
     }
 ];
 
@@ -138,32 +68,29 @@ var correctAnswers = [];
 var userAnswers = [];
 var score = 0;
 
+for (var i = 0; i < questions.length; i++) {
+    userAnswers[i] = null;
+};
 
 function answerKey() {
-
-    var allAnswers = [];
     for (i in questions) {
+        var right = questions[i].solution;
         currentQuestion = (parseInt(i) + parseInt(1))
-        correctAnswers.push(currentQuestion + ": " + questions[i].correctAnswer);
-        allAnswers.push(questions[i].answers);
+        correctAnswers.push(currentQuestion + ": " + questions[i].answers[right]);
     };
-    // console.log(correctAnswers);
-    // console.log(allAnswers);
 
-    for (i in questions) {
-        if (questions[i]) {
-
-        }
-    };
     return correctAnswers;
 };
 
-function userKey() {
-    console.log($("input"));
 
-    $("input").on("focus", function () {
-        userAnswers.push($("input").val());
-    });
+function userKey() {
+    for (i in questions) {   
+        currentQuestion = (parseInt(i) + parseInt(1))
+        userIndex = ($("input[name=" + currentQuestion + "]:checked").val());
+        userAnswers[i] =(currentQuestion + ": " + questions[i].answers[userIndex]);
+        console.log(userAnswers);
+    }
+
     // console.log(userAnswers);
     return userAnswers;
 };
@@ -172,6 +99,9 @@ function userScore() {
     for (i in userAnswers) {
         if (userAnswers[i] === correctAnswers[i]) {
             score++;
+        }
+        else if (userAnswers[i] === null) {
+            userAnswers[i] = "You forgot this one!";
         }
     }
     return score;
@@ -182,18 +112,17 @@ function results() {
     answerKey();
     userKey();
     userScore();
+    var num = parseInt(questions.length);
 
-    $(".questions").html("<h2>Your score: " + score + "/10 </h2> <br></br>");
+    $(".questions").html("<h2>Your score: " + score + "/" + num + "</h2> <br></br>");
     $(".correct").html("Correct Answers <br></br>");
     $(".user").html("User Answers <br></br>");
     for (i in correctAnswers) {
         $(".user").append(userAnswers[i] + "<br></br>");
         $(".correct").append(correctAnswers[i] + "<br></br>");
-        // if (userAnswers[i] !== correctAnswers[i]) {
-
-        // }
 
     }
+
 
 };
 
@@ -209,8 +138,8 @@ function tableRow() {
         $(".questions").append("<strong>" + currentQuestionNumber + ": " + currentQuestion + "</strong><br> <br>");
 
         for (letter in currentAnswers) {
-            $(".answers").append('<input type="radio" name=question-' + i + 'value=' + letter + '>' + letter + ": " + currentAnswers[letter]);
-            if (letter === "d") {
+            $(".answers").append('<input id="q" type="radio" name=' + currentQuestionNumber + ' value=' + letter + '> \t' + currentAnswers[letter] + "\t");
+            if (letter === "3") {
                 $(".answers").append("<br> <br>");
             }
         };
