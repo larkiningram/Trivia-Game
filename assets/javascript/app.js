@@ -1,6 +1,14 @@
-var quizContainer = document.getElementById('quiz');
-var resultsContainer = document.getElementById('results');
-var submitButton = document.getElementById('submit');
+
+function start() {
+    $(".countdown").html("<button class='start btn-lg btn-warning'> <h2>Start </h2> </button>");
+
+    $(".start").on("click", function () {
+        tableRow(questions)
+    });
+};
+
+start();
+
 
 const questions = [
     {
@@ -125,39 +133,104 @@ const questions = [
     }
 ];
 
-function sub() {
-    document.myform.submit();
-}
+//// determine score
+var correctAnswers = [];
+var userAnswers = [];
+var score = 0;
+
+
+function answerKey() {
+
+    var allAnswers = [];
+    for (i in questions) {
+        currentQuestion = (parseInt(i) + parseInt(1))
+        correctAnswers.push(currentQuestion + ": " + questions[i].correctAnswer);
+        allAnswers.push(questions[i].answers);
+    };
+    // console.log(correctAnswers);
+    // console.log(allAnswers);
+
+    for (i in questions) {
+        if (questions[i]) {
+
+        }
+    };
+    return correctAnswers;
+};
+
+function userKey() {
+    console.log($("input"));
+
+    $("input").on("focus", function () {
+        userAnswers.push($("input").val());
+    });
+    // console.log(userAnswers);
+    return userAnswers;
+};
+
+function userScore() {
+    for (i in userAnswers) {
+        if (userAnswers[i] === correctAnswers[i]) {
+            score++;
+        }
+    }
+    return score;
+};
+
+
+function results() {
+    answerKey();
+    userKey();
+    userScore();
+
+    $(".questions").html("<h2>Your score: " + score + "/10 </h2> <br></br>");
+    $(".correct").html("Correct Answers <br></br>");
+    $(".user").html("User Answers <br></br>");
+    for (i in correctAnswers) {
+        $(".user").append(userAnswers[i] + "<br></br>");
+        $(".correct").append(correctAnswers[i] + "<br></br>");
+        // if (userAnswers[i] !== correctAnswers[i]) {
+
+        // }
+
+    }
+
+};
+
+//// displaying questions and answers
 
 function tableRow() {
+    timeRemaining();
     for (i in questions) {
         var currentQuestion = questions[i].question;
         var currentAnswers = questions[i].answers;
+        var currentQuestionNumber = (parseInt(i) + parseInt(1))
 
-        $(".questions").append(currentQuestion + "<br> <br>");
+        $(".questions").append("<strong>" + currentQuestionNumber + ": " + currentQuestion + "</strong><br> <br>");
 
         for (letter in currentAnswers) {
-            $(".questions").append('<input type="radio" name=question-' + i + 'value=' + letter + '>' + letter + ": " + currentAnswers[letter]);
-            // $(".questions").addClass("mx-");
+            $(".answers").append('<input type="radio" name=question-' + i + 'value=' + letter + '>' + letter + ": " + currentAnswers[letter]);
             if (letter === "d") {
-                $(".questions").append("<br> <br>");
+                $(".answers").append("<br> <br>");
             }
         };
 
-        console.log(currentQuestion);
-        console.log(currentAnswers);
+        // console.log(currentQuestion);
+        // console.log(currentAnswers);
     };
-    $(".sub").append('<input type="button" onclick="sub()" value="submit form">');
 };
 
-tableRow(questions);
+// tableRow();
 
-var time = 60;
 
+/// timing functions 
+
+var time = 10;
 var inter;
 
 
 function timeRemaining() {
+    $(".countdown").html("");
     clearInterval(inter);
     inter = setInterval(decrement, 1000);
 };
@@ -169,7 +242,7 @@ function decrement() {
 
     if (time === 0) {
         stop();
-        alert("Time Up!");
+        results();
     }
 };
 
@@ -177,17 +250,3 @@ function stop() {
     clearInterval(inter);
 };
 
-timeRemaining();
-
-
-function results() {
-
-    var correctAnswers = [];
-    for (i in questions) {
-        // currentQuestion = questions[i].correctAnswer;
-        correctAnswers.push(questions[i].correctAnswer);
-    };
-
-};
-
-results();
