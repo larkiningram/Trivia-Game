@@ -4,8 +4,8 @@
 
 body {
     margin: 0 auto;
-    background-image: url(../images/quiz.jpg);
-    background-size: cover;
+    background-image: url(../images/harry.jpg);
+    background-size: repeat;
 }
 
 

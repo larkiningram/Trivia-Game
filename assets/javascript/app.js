@@ -148,7 +148,7 @@ function tableRow() {
 
 /// timing functions 
 
-var time = 30;
+var time = 60;
 var inter;
 
 
