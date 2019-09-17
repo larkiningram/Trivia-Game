@@ -83,6 +83,9 @@ function userScore() {
         else if (userAnswers[i] === (currentQuestion + ": undefined")) {
             userAnswers[i] = "You forgot this one!";
         }
+        else {
+            userAnswers[i] = (userAnswers[i] + "<strong> X</strong>");
+        }
     }
     return score;
 };
@@ -134,7 +137,7 @@ function tableRow() {
             }
         };
         console.log(currentQuestion);
-        console.log(currentAnswers);
+        console.log(currentAnswers[questions[i].solution]);
     };
 
     $(".sub").html('<button id="sub" class="btn btn-lg btn-warning"> Submit </button>');
